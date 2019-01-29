@@ -24,5 +24,14 @@ public class LikeListener {
 
         updateKafkaTemplate.send("UPDATE",updateMessage);
 
+        updateMessage=new UpdateMessage();
+        updateMessage.setUpdateUnit("POINTS");
+        updateMessage.setUpdateValue(1);
+        updateMessage.setRowId(likeKafkaMessage.getUserId());
+        updateMessage.setColumnId(likeKafkaMessage.getUserIdAuthor());
+        updateMessage.setTarget("USER");
+
+        updateKafkaTemplate.send("UPDATE",updateMessage);
+
     }
 }

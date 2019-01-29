@@ -23,7 +23,7 @@ public class FollowListener {
         updateMessage.setUpdateValue(1);
         updateMessage.setRowId(followKafkaMessage.getUserId());
         updateMessage.setColumnId(followKafkaMessage.getUserIdForFollowed());
-        updateMessage.setTarget("SURGE");
+        updateMessage.setTarget("USER");
 
         updateKafkaTemplate.send("UPDATE",updateMessage);
 
