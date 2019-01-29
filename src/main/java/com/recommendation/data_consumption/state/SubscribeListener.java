@@ -5,13 +5,15 @@ import com.recommendation.data_consumption.dto.UpdateMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SubscribeListener {
 
     @Autowired
     KafkaTemplate<String,UpdateMessage> updateKafkaTemplate;
 
-    @KafkaListener(topics = "SUBSCRIBE", containerFactory = "subscribeContestKafkaListenerFactory")
+    @KafkaListener(topics = "SUBSCRIBE",group="group_subscribe",containerFactory = "subscribeContestKafkaListenerFactory")
     public void processSubscribeMessage(SubscribeContestKafkaMessage subscribeContestKafkaMessage)
     {
         UpdateMessage updateMessage=new UpdateMessage();
@@ -20,7 +22,6 @@ public class SubscribeListener {
         updateMessage.setRowId(subscribeContestKafkaMessage.getUserId());
         updateMessage.setColumnId(subscribeContestKafkaMessage.getCategory());
         updateMessage.setTarget("SURGE");
-
         updateKafkaTemplate.send("UPDATE",updateMessage);
 
     }

@@ -5,13 +5,15 @@ import com.recommendation.data_consumption.dto.UpdateMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
 
+@Service
 public class LikeListener {
     @Autowired
     KafkaTemplate<String,UpdateMessage> updateKafkaTemplate;
 
-    @KafkaListener(topics = "LIKE", containerFactory = "likeKafkaListenerFactory")
-    public void processSubscribeMessage(LikeKafkaMessage likeKafkaMessage)
+    @KafkaListener(topics = "LIKE",group="group_like",containerFactory = "likeKafkaListenerFactory")
+    public void processLikeMessage(LikeKafkaMessage likeKafkaMessage)
     {
         UpdateMessage updateMessage=new UpdateMessage();
         updateMessage.setUpdateUnit("POINTS");
