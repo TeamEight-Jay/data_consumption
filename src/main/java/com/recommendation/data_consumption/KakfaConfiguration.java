@@ -1,7 +1,6 @@
 package com.recommendation.data_consumption;
 
-import com.recommendation.data_consumption.dto.SubscribeContestKafkaMessage;
-import com.recommendation.data_consumption.dto.UpdateMessage;
+import com.recommendation.data_consumption.dto.*;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -55,7 +54,7 @@ public class KakfaConfiguration {
         return factory;
     }
 
-
+    //Subscribe contest consumer
     @Bean
     public ConsumerFactory<String, SubscribeContestKafkaMessage> subscribeContestConsumerFactory() {
         Map<String, Object> config = new HashMap<>();
@@ -73,6 +72,69 @@ public class KakfaConfiguration {
     public ConcurrentKafkaListenerContainerFactory<String, SubscribeContestKafkaMessage> subscribeContestKafkaListenerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, SubscribeContestKafkaMessage> factory = new ConcurrentKafkaListenerContainerFactory();
         factory.setConsumerFactory(subscribeContestConsumerFactory());
+        return factory;
+    }
+
+    //Like consumer
+    @Bean
+    public ConsumerFactory<String, LikeKafkaMessage> likeConsumerFactory() {
+        Map<String, Object> config = new HashMap<>();
+
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+
+        return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(),
+                new JsonDeserializer<>(LikeKafkaMessage.class));
+    }
+
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, LikeKafkaMessage> likeKafkaListenerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, LikeKafkaMessage> factory = new ConcurrentKafkaListenerContainerFactory();
+        factory.setConsumerFactory(likeConsumerFactory());
+        return factory;
+    }
+
+    //Play question consumer
+    @Bean
+    public ConsumerFactory<String, PlayQuestionKafkaMessage> playQuestionConsumerFactory() {
+        Map<String, Object> config = new HashMap<>();
+
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+
+        return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(),
+                new JsonDeserializer<>(PlayQuestionKafkaMessage.class));
+    }
+
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, PlayQuestionKafkaMessage> playQuestionKafkaListenerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, PlayQuestionKafkaMessage> factory = new ConcurrentKafkaListenerContainerFactory();
+        factory.setConsumerFactory(playQuestionConsumerFactory());
+        return factory;
+    }
+
+    //Follow consumer
+    @Bean
+    public ConsumerFactory<String, FollowKafkaMessage> followConsumerFactory() {
+        Map<String, Object> config = new HashMap<>();
+
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+
+        return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(),
+                new JsonDeserializer<>(FollowKafkaMessage.class));
+    }
+
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, FollowKafkaMessage> followKafkaListenerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, FollowKafkaMessage> factory = new ConcurrentKafkaListenerContainerFactory();
+        factory.setConsumerFactory(followConsumerFactory());
         return factory;
     }
 
