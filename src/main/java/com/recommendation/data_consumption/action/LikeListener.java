@@ -17,7 +17,7 @@ public class LikeListener {
     {
         UpdateMessage updateMessage=new UpdateMessage();
         updateMessage.setUpdateUnit("POINTS");
-        updateMessage.setUpdateValue(1);
+        updateMessage.setUpdateValue(2);
         updateMessage.setRowId(likeKafkaMessage.getUserId());
         updateMessage.setColumnId(likeKafkaMessage.getCategory());
         updateMessage.setTarget("SURGE");
@@ -26,7 +26,7 @@ public class LikeListener {
 
         updateMessage=new UpdateMessage();
         updateMessage.setUpdateUnit("POINTS");
-        updateMessage.setUpdateValue(1);
+        updateMessage.setUpdateValue(2);
         updateMessage.setRowId(likeKafkaMessage.getUserId());
         updateMessage.setColumnId(likeKafkaMessage.getUserIdAuthor());
         updateMessage.setTarget("USER");

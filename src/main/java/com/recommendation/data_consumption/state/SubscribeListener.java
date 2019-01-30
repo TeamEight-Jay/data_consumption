@@ -18,7 +18,7 @@ public class SubscribeListener {
     {
         UpdateMessage updateMessage=new UpdateMessage();
         updateMessage.setUpdateUnit("POINTS");
-        updateMessage.setUpdateValue(1);
+        updateMessage.setUpdateValue(5);
         updateMessage.setRowId(subscribeContestKafkaMessage.getUserId());
         updateMessage.setColumnId(subscribeContestKafkaMessage.getCategory());
         updateMessage.setTarget("SURGE");
