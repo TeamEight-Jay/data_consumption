@@ -16,8 +16,8 @@ public class LikeListener {
     public void processLikeMessage(LikeKafkaMessage likeKafkaMessage)
     {
         UpdateMessage updateMessage=new UpdateMessage();
-        updateMessage.setUpdateUnit("POINTS");
-        updateMessage.setUpdateValue(2);
+        updateMessage.setUpdateUnit("PERCENTAGE");
+        updateMessage.setUpdateValue(0.05);
         updateMessage.setRowId(likeKafkaMessage.getUserId());
         updateMessage.setColumnId(likeKafkaMessage.getCategory());
         updateMessage.setTarget("CATEGORY");
@@ -25,8 +25,17 @@ public class LikeListener {
         updateKafkaTemplate.send("UPDATE",updateMessage);
 
         updateMessage=new UpdateMessage();
-        updateMessage.setUpdateUnit("POINTS");
-        updateMessage.setUpdateValue(2);
+        updateMessage.setUpdateUnit("PERCENTAGE");
+        updateMessage.setUpdateValue(0.2);
+        updateMessage.setRowId("trending");
+        updateMessage.setColumnId(likeKafkaMessage.getCategory());
+        updateMessage.setTarget("TRENDING");
+
+        updateKafkaTemplate.send("UPDATE",updateMessage);
+
+        updateMessage=new UpdateMessage();
+        updateMessage.setUpdateUnit("PERCENTAGE");
+        updateMessage.setUpdateValue(0.05);
         updateMessage.setRowId(likeKafkaMessage.getUserId());
         updateMessage.setColumnId(likeKafkaMessage.getUserIdAuthor());
         updateMessage.setTarget("USER");

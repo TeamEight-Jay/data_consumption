@@ -3,10 +3,21 @@ package com.recommendation.data_consumption.dto;
 public class UpdateMessage {
 
     private String target;
-    private int updateValue;
+    private double updateValue;
     private String updateUnit;
     private String rowId;
     private String columnId;
+
+    @Override
+    public String toString() {
+        return "UpdateMessage{" +
+                "target='" + target + '\'' +
+                ", updateValue=" + updateValue +
+                ", updateUnit='" + updateUnit + '\'' +
+                ", rowId='" + rowId + '\'' +
+                ", columnId='" + columnId + '\'' +
+                '}';
+    }
 
     public String getTarget() {
         return target;
@@ -16,11 +27,11 @@ public class UpdateMessage {
         this.target = target;
     }
 
-    public int getUpdateValue() {
+    public double getUpdateValue() {
         return updateValue;
     }
 
-    public void setUpdateValue(int updateValue) {
+    public void setUpdateValue(double updateValue) {
         this.updateValue = updateValue;
     }
 
@@ -46,16 +57,5 @@ public class UpdateMessage {
 
     public void setColumnId(String columnId) {
         this.columnId = columnId;
-    }
-
-    @Override
-    public String toString() {
-        return "UpdateMessage{" +
-                "target='" + target + '\'' +
-                ", updateValue=" + updateValue +
-                ", updateUnit='" + updateUnit + '\'' +
-                ", rowId='" + rowId + '\'' +
-                ", columnId='" + columnId + '\'' +
-                '}';
     }
 }

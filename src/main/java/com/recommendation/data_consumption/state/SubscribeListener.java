@@ -24,6 +24,14 @@ public class SubscribeListener {
         updateMessage.setTarget("CATEGORY");
         updateKafkaTemplate.send("UPDATE",updateMessage);
 
+        updateMessage=new UpdateMessage();
+        updateMessage.setUpdateUnit("POINTS");
+        updateMessage.setUpdateValue(1);
+        updateMessage.setRowId("trending");
+        updateMessage.setColumnId(subscribeContestKafkaMessage.getCategory());
+        updateMessage.setTarget("TRENDING");
+        updateKafkaTemplate.send("UPDATE",updateMessage);
+
     }
 
 }
