@@ -13,7 +13,7 @@ public class SubscribeListener {
     @Autowired
     KafkaTemplate<String,UpdateMessage> updateKafkaTemplate;
 
-    @KafkaListener(topics = "SUBSCRIBE",group="group_subscribe",containerFactory = "subscribeContestKafkaListenerFactory")
+    @KafkaListener(topics = "SUBSCRIBE",containerGroup="group_subscribe",containerFactory = "subscribeContestKafkaListenerFactory")
     public void processSubscribeMessage(SubscribeContestKafkaMessage subscribeContestKafkaMessage)
     {
         UpdateMessage updateMessage=new UpdateMessage();
@@ -21,7 +21,7 @@ public class SubscribeListener {
         updateMessage.setUpdateValue(1);
         updateMessage.setRowId(subscribeContestKafkaMessage.getUserId());
         updateMessage.setColumnId(subscribeContestKafkaMessage.getCategory());
-        updateMessage.setTarget("SURGE");
+        updateMessage.setTarget("CATEGORY");
         updateKafkaTemplate.send("UPDATE",updateMessage);
 
     }

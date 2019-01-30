@@ -13,7 +13,7 @@ public class PlayQuestionListener {
     @Autowired
     KafkaTemplate<String,UpdateMessage> updateKafkaTemplate;
 
-    @KafkaListener(topics = "PLAY_QUESTION",group="group_play", containerFactory = "playQuestionKafkaListenerFactory")
+    @KafkaListener(topics = "PLAY_QUESTION",containerGroup="group_play", containerFactory = "playQuestionKafkaListenerFactory")
     public void processPlayMessage(PlayQuestionKafkaMessage playQuestionContestKafkaMessage)
     {
         UpdateMessage updateMessage=new UpdateMessage();
@@ -21,7 +21,7 @@ public class PlayQuestionListener {
         updateMessage.setUpdateValue(1);
         updateMessage.setRowId(playQuestionContestKafkaMessage.getUserId());
         updateMessage.setColumnId(playQuestionContestKafkaMessage.getCategory());
-        updateMessage.setTarget("SURGE");
+        updateMessage.setTarget("CATEGORY");
 
         updateKafkaTemplate.send("UPDATE",updateMessage);
 

@@ -12,7 +12,7 @@ public class LikeListener {
     @Autowired
     KafkaTemplate<String,UpdateMessage> updateKafkaTemplate;
 
-    @KafkaListener(topics = "LIKE",group="group_like",containerFactory = "likeKafkaListenerFactory")
+    @KafkaListener(topics = "LIKE",containerGroup="group_like",containerFactory = "likeKafkaListenerFactory")
     public void processLikeMessage(LikeKafkaMessage likeKafkaMessage)
     {
         UpdateMessage updateMessage=new UpdateMessage();
@@ -20,7 +20,7 @@ public class LikeListener {
         updateMessage.setUpdateValue(1);
         updateMessage.setRowId(likeKafkaMessage.getUserId());
         updateMessage.setColumnId(likeKafkaMessage.getCategory());
-        updateMessage.setTarget("SURGE");
+        updateMessage.setTarget("CATEGORY");
 
         updateKafkaTemplate.send("UPDATE",updateMessage);
 

@@ -1,7 +1,6 @@
 package com.recommendation.data_consumption.action;
 
 import com.recommendation.data_consumption.dto.FollowKafkaMessage;
-import com.recommendation.data_consumption.dto.SubscribeContestKafkaMessage;
 import com.recommendation.data_consumption.dto.UpdateMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -15,7 +14,7 @@ public class FollowListener {
     @Autowired
     KafkaTemplate<String,UpdateMessage> updateKafkaTemplate;
 
-    @KafkaListener(topics = "FOLLOW",group="group_follow", containerFactory = "followKafkaListenerFactory")
+    @KafkaListener(topics = "FOLLOW",containerGroup="group_follow", containerFactory = "followKafkaListenerFactory")
     public void processFollowMessage(FollowKafkaMessage followKafkaMessage)
     {
         UpdateMessage updateMessage=new UpdateMessage();
@@ -26,6 +25,7 @@ public class FollowListener {
         updateMessage.setTarget("USER");
 
         updateKafkaTemplate.send("UPDATE",updateMessage);
+
 
     }
 }
