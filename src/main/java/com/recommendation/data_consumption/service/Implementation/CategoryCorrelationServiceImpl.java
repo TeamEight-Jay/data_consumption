@@ -6,6 +6,9 @@ import com.recommendation.data_consumption.service.CategoryCorrelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+
 @Service
 public class CategoryCorrelationServiceImpl implements CategoryCorrelationService {
 
@@ -20,12 +23,29 @@ public class CategoryCorrelationServiceImpl implements CategoryCorrelationServic
             double currentValue=userRow.getCategories().getOrDefault(categoryName,0.0);
             currentValue+=value;
             userRow.getCategories().put(categoryName,currentValue);
-            categoryCorrelationRepository.save(userRow);
         }
+        else
+        {
+            userRow=new CategoryMappingEntity();
+            userRow.setUserId(userId);
+            userRow.setCategories(new HashMap<String, Double>());
+            userRow.getCategories().put(categoryName,value);
+        }
+        categoryCorrelationRepository.save(userRow);
     }
 
     @Override
     public CategoryMappingEntity getUserMapping(String userId) {
         return categoryCorrelationRepository.findOne(userId);
+    }
+
+    @Override
+    public List<CategoryMappingEntity> getAll() {
+        return categoryCorrelationRepository.findAll();
+    }
+
+    @Override
+    public void deleteAll() {
+        categoryCorrelationRepository.deleteAll();
     }
 }

@@ -6,6 +6,8 @@ import com.recommendation.data_consumption.service.UserCorrelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 @Service
 public class UserCorrelationServiceImpl implements UserCorrelationService {
     @Autowired
@@ -19,8 +21,15 @@ public class UserCorrelationServiceImpl implements UserCorrelationService {
             double currentValue=userRow.getMappedUsers().getOrDefault(otherUserId,0.0);
             currentValue+=value;
             userRow.getMappedUsers().put(otherUserId,currentValue);
-            userCorrelationRepository.save(userRow);
         }
+        else
+        {
+            userRow=new UserMappingEntity();
+            userRow.setUserId(userId);
+            userRow.setMappedUsers(new HashMap<String, Double>());
+            userRow.getMappedUsers().put(otherUserId,value);
+        }
+        userCorrelationRepository.save(userRow);
     }
 
     @Override
