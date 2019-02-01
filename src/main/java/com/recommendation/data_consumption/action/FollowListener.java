@@ -19,7 +19,7 @@ public class FollowListener {
     {
         UpdateMessage updateMessage=new UpdateMessage();
         updateMessage.setUpdateUnit("POINTS");
-        updateMessage.setUpdateValue(3);
+        updateMessage.setUpdateValue(0.2);
         updateMessage.setRowId(followKafkaMessage.getUserId());
         updateMessage.setColumnId(followKafkaMessage.getUserIdForFollowed());
         updateMessage.setTarget("USER");

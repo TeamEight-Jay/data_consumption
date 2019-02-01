@@ -17,7 +17,7 @@ public class PlayQuestionListener {
     public void processPlayMessage(PlayQuestionKafkaMessage playQuestionContestKafkaMessage)
     {
         UpdateMessage updateMessage=new UpdateMessage();
-        updateMessage.setUpdateUnit("PERCENTAGE");
+        updateMessage.setUpdateUnit("POINT");
         updateMessage.setUpdateValue(0.067);
         updateMessage.setRowId(playQuestionContestKafkaMessage.getUserId());
         updateMessage.setColumnId(playQuestionContestKafkaMessage.getCategory());
@@ -26,8 +26,8 @@ public class PlayQuestionListener {
         updateKafkaTemplate.send("UPDATE",updateMessage);
 
         updateMessage=new UpdateMessage();
-        updateMessage.setUpdateUnit("PERCENTAGE");
-        updateMessage.setUpdateValue(0.2);
+        updateMessage.setUpdateUnit("POINT");
+        updateMessage.setUpdateValue(0.05);
         updateMessage.setRowId("trending");
         updateMessage.setColumnId(playQuestionContestKafkaMessage.getCategory());
         updateMessage.setTarget("TRENDING");
