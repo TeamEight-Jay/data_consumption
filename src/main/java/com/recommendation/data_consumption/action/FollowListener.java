@@ -1,10 +1,9 @@
 package com.recommendation.data_consumption.action;
 
 import com.recommendation.data_consumption.dto.FollowKafkaMessage;
-import com.recommendation.data_consumption.dto.UpdateMessage;
+import com.recommendation.data_consumption.service.UserCorrelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 
@@ -12,19 +11,18 @@ import org.springframework.stereotype.Service;
 public class FollowListener {
 
     @Autowired
-    KafkaTemplate<String,UpdateMessage> updateKafkaTemplate;
+    UserCorrelationService userCorrelationService;
 
-    @KafkaListener(topics = "FOLLOW",containerGroup="group_follow", containerFactory = "followKafkaListenerFactory")
+    @KafkaListener(topics = "FOLLOW_EXP",containerGroup="group_follow_EXP", containerFactory = "followKafkaListenerFactory")
     public void processFollowMessage(FollowKafkaMessage followKafkaMessage)
     {
-        UpdateMessage updateMessage=new UpdateMessage();
-        updateMessage.setUpdateUnit("POINTS");
-        updateMessage.setUpdateValue(3);
-        updateMessage.setRowId(followKafkaMessage.getUserId());
-        updateMessage.setColumnId(followKafkaMessage.getUserIdForFollowed());
-        updateMessage.setTarget("USER");
+        String userId=followKafkaMessage.getUserId();
+        String otherUserId=followKafkaMessage.getUserIdForFollowed();
 
-        updateKafkaTemplate.send("UPDATE",updateMessage);
+        if(userId!=null&&otherUserId!=null)
+        {
+            userCorrelationService.addValue(userId,otherUserId,5);
+        }
 
 
     }

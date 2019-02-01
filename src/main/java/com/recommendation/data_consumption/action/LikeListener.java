@@ -1,46 +1,38 @@
 package com.recommendation.data_consumption.action;
 
 import com.recommendation.data_consumption.dto.LikeKafkaMessage;
-import com.recommendation.data_consumption.dto.UpdateMessage;
+import com.recommendation.data_consumption.service.CategoryCorrelationService;
+import com.recommendation.data_consumption.service.UserCorrelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LikeListener {
     @Autowired
-    KafkaTemplate<String,UpdateMessage> updateKafkaTemplate;
+    CategoryCorrelationService categoryCorrelationService;
 
-    @KafkaListener(topics = "LIKE",containerGroup="group_like",containerFactory = "likeKafkaListenerFactory")
+    @Autowired
+    UserCorrelationService userCorrelationService;
+
+    @KafkaListener(topics = "LIKE_EXP",containerGroup="group_like_EXP",containerFactory = "likeKafkaListenerFactory")
     public void processLikeMessage(LikeKafkaMessage likeKafkaMessage)
     {
-        UpdateMessage updateMessage=new UpdateMessage();
-        updateMessage.setUpdateUnit("POINTS");
-        updateMessage.setUpdateValue(2);
-        updateMessage.setRowId(likeKafkaMessage.getUserId());
-        updateMessage.setColumnId(likeKafkaMessage.getCategory());
-        updateMessage.setTarget("CATEGORY");
+        String userId=likeKafkaMessage.getUserId();
+        String categoryId=likeKafkaMessage.getCategory();
 
-        updateKafkaTemplate.send("UPDATE",updateMessage);
+        if(userId!=null&&categoryId!=null)
+        {
+            categoryCorrelationService.addValue(userId,categoryId,1);
+        }
 
-        updateMessage=new UpdateMessage();
-        updateMessage.setUpdateUnit("PERCENTAGE");
-        updateMessage.setUpdateValue(0.2);
-        updateMessage.setRowId("trending");
-        updateMessage.setColumnId(likeKafkaMessage.getCategory());
-        updateMessage.setTarget("TRENDING");
+        userId=likeKafkaMessage.getUserId();
+        String otherUserId=likeKafkaMessage.getUserIdAuthor();
 
-        updateKafkaTemplate.send("UPDATE",updateMessage);
-
-        updateMessage=new UpdateMessage();
-        updateMessage.setUpdateUnit("PERCENTAGE");
-        updateMessage.setUpdateValue(0.05);
-        updateMessage.setRowId(likeKafkaMessage.getUserId());
-        updateMessage.setColumnId(likeKafkaMessage.getUserIdAuthor());
-        updateMessage.setTarget("USER");
-
-        updateKafkaTemplate.send("UPDATE",updateMessage);
+        if(userId!=null&&otherUserId!=null)
+        {
+            userCorrelationService.addValue(userId,otherUserId,1);
+        }
 
     }
 }

@@ -1,38 +1,28 @@
 package com.recommendation.data_consumption.state;
 
 import com.recommendation.data_consumption.dto.PlayQuestionKafkaMessage;
-import com.recommendation.data_consumption.dto.SubscribeContestKafkaMessage;
-import com.recommendation.data_consumption.dto.UpdateMessage;
+import com.recommendation.data_consumption.service.CategoryCorrelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PlayQuestionListener {
-    @Autowired
-    KafkaTemplate<String,UpdateMessage> updateKafkaTemplate;
 
-    @KafkaListener(topics = "PLAY_QUESTION",containerGroup="group_play", containerFactory = "playQuestionKafkaListenerFactory")
+    @Autowired
+    CategoryCorrelationService categoryCorrelationService;
+
+
+    @KafkaListener(topics = "PLAY_QUESTION_EXP",containerGroup="group_play_EXP", containerFactory = "playQuestionKafkaListenerFactory")
     public void processPlayMessage(PlayQuestionKafkaMessage playQuestionContestKafkaMessage)
     {
-        UpdateMessage updateMessage=new UpdateMessage();
-        updateMessage.setUpdateUnit("PERCENTAGE");
-        updateMessage.setUpdateValue(0.067);
-        updateMessage.setRowId(playQuestionContestKafkaMessage.getUserId());
-        updateMessage.setColumnId(playQuestionContestKafkaMessage.getCategory());
-        updateMessage.setTarget("CATEGORY");
+        String userId=playQuestionContestKafkaMessage.getUserId();
+        String categoryId=playQuestionContestKafkaMessage.getCategory();
 
-        updateKafkaTemplate.send("UPDATE",updateMessage);
-
-        updateMessage=new UpdateMessage();
-        updateMessage.setUpdateUnit("PERCENTAGE");
-        updateMessage.setUpdateValue(0.2);
-        updateMessage.setRowId("trending");
-        updateMessage.setColumnId(playQuestionContestKafkaMessage.getCategory());
-        updateMessage.setTarget("TRENDING");
-
-        updateKafkaTemplate.send("UPDATE",updateMessage);
+        if(userId!=null&&categoryId!=null)
+        {
+            categoryCorrelationService.addValue(userId,categoryId,0.34);
+        }
 
     }
 }

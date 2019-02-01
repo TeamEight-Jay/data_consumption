@@ -45,7 +45,7 @@ public class KakfaConfiguration {
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_string");
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_string_EXP");
 
         return new DefaultKafkaConsumerFactory<>(config);
     }
@@ -66,7 +66,7 @@ public class KakfaConfiguration {
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_subscribe");
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_subscribe_EXP");
 
         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(),
                 new JsonDeserializer<>(SubscribeContestKafkaMessage.class));
@@ -88,7 +88,7 @@ public class KakfaConfiguration {
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_like");
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_like_EXP");
 
         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(),
                 new JsonDeserializer<>(LikeKafkaMessage.class));
@@ -110,7 +110,7 @@ public class KakfaConfiguration {
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_play");
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_play_EXP");
 
         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(),
                 new JsonDeserializer<>(PlayQuestionKafkaMessage.class));
@@ -132,7 +132,7 @@ public class KakfaConfiguration {
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_follow");
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_follow_EXP");
 
         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(),
                 new JsonDeserializer<>(FollowKafkaMessage.class));
